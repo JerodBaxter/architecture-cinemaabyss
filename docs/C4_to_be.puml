@@ -1,0 +1,66 @@
+@startuml
+skinparam packageStyle rectangle
+skinparam package {
+    BackgroundColor LightGray
+    BorderColor DarkGray
+    ArrowColor DarkGray
+}
+
+left to right direction
+
+package "КиноБездна" {
+    package "API Gateway" {
+        component "API Gateway" as gateway
+    }
+
+    package "User Domain" {
+        component "User Service" as user
+        component "Auth Service" as auth
+    }
+
+    package "Content Domain" {
+        component "Movie Catalog" as movies
+        component "Rating Service" as ratings
+        component "Genre Service" as genres
+    }
+
+    package "Payment Domain" {
+        component "Payment Service" as payments
+        component "Subscription Service" as subscriptions
+    }
+
+    package "Notification Domain" {
+        component "Notification Service" as notifications
+    }
+
+    package "Data Storage" {
+        component "User DB" as userdb
+        component "Content DB" as contentdb
+        component "Payment DB" as paymentdb
+        component "Notification DB" as notificationdb
+    }
+
+    package "Event Bus" {
+        component "Kafka" as kafka
+    }
+
+    gateway --> user : REST
+    gateway --> movies : REST
+    gateway --> payments : REST
+    gateway --> notifications : REST
+
+    user --> userdb : CRUD
+    auth --> userdb : Auth
+    movies --> contentdb : CRUD
+    ratings --> contentdb : CRUD
+    genres --> contentdb : CRUD
+    payments --> paymentdb : CRUD
+    subscriptions --> paymentdb : CRUD
+    notifications --> notificationdb : CRUD
+
+    user --> kafka : Events
+    movies --> kafka : Events
+    payments --> kafka : Events
+    notifications --> kafka : Events
+}
+@enduml
