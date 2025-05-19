@@ -1,18 +1,48 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: event-service
+  name: events-service
+  namespace: cinemaabyss
+  labels:
+    app: events-service
+    prometheus.io/port: "8080"
+    prometheus.io/scrape: "true"
 spec:
+  replicas: 1
   selector:
     matchLabels:
-      app: event-service
+      app: events-service
   template:
     metadata:
       labels:
-        app: event-service
+        app: events-service
     spec:
       containers:
-      - name: event-service
+      - name: events-service
         image: ghcr.io/jerodbaxter/cinemaabyss/event-service:latest
         ports:
         - containerPort: 8080
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 250m
+            memory: 256Mi
+        env:
+        - name: SOME_ENV_VAR
+          value: "value"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 15
+          periodSeconds: 20
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10
+      imagePullSecrets:
+      - name: dockerconfigjson
