@@ -21,7 +21,7 @@ spec:
         spec:
             containers:
                 - name: proxy-service
-                  image: ghcr.io/cinemaabyss/proxy-service:latest
+                  image: ghcr.io/jerodbaxter/cinemaabyss/proxy-service:latest
                   ports:
                       - containerPort: 8000
                   resources:
