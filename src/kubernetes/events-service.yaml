@@ -13,6 +13,6 @@ spec:
     spec:
       containers:
       - name: event-service
-        image: ghcr.io/JerodBaxter/cinemaabyss/event-service:latest
+        image: ghcr.io/jerodbaxter/cinemaabyss/event-service:latest
         ports:
         - containerPort: 8080
