@@ -5,7 +5,7 @@ metadata:
   namespace: cinemaabyss
   labels:
     app: events-service
-    prometheus.io/port: "8080"
+    prometheus.io/port: "8082"
     prometheus.io/scrape: "true"
 spec:
   replicas: 1
@@ -21,7 +21,7 @@ spec:
       - name: events-service
         image: ghcr.io/jerodbaxter/cinemaabyss/event-service:latest
         ports:
-        - containerPort: 8080
+        - containerPort: 8082
         resources:
           requests:
             cpu: 100m
@@ -35,13 +35,13 @@ spec:
         livenessProbe:
           httpGet:
             path: /health
-            port: 8080
+            port: 8082
           initialDelaySeconds: 15
           periodSeconds: 20
         readinessProbe:
           httpGet:
             path: /ready
-            port: 8080
+            port: 8082
           initialDelaySeconds: 5
           periodSeconds: 10
       imagePullSecrets:
